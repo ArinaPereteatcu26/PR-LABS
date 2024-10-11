@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Newtork
+namespace Network.Models
 {
     public class Product
     {
+        public string? Url { get; set; }
+        public string? Image { get; set; }
         public string? Name { get; set; }
-        public int Price { get; set; }
-        public string? Link { get; set; }
-        public string? Resolution { get; set; }
+        public string? Price { get; set; }
     }
+
+
 }

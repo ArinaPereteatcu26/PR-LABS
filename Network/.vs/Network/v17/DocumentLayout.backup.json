@@ -5,6 +5,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,8 +18,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Product.cs",
+              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Models\\Product.cs",
+              "RelativeDocumentMoniker": "Network\\Models\\Product.cs",
+              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Models\\Product.cs",
+              "RelativeToolTip": "Network\\Models\\Product.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-11T14:52:52.652Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
@@ -24,7 +41,7 @@
               "RelativeDocumentMoniker": "Network\\Program.cs",
               "ToolTip": "E:\\PR-LABS\\Network\\Network\\Program.cs",
               "RelativeToolTip": "Network\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAmwCcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-11T07:19:15.534Z",
               "EditorCaption": ""
