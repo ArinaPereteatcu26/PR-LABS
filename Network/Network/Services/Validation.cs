@@ -26,7 +26,7 @@ namespace Network.Services
             return RemoveWhitespacesUsingRegex(memory);
         }
 
-        // Change the return type from bool to string
+        
         private string RemoveWhitespacesUsingRegex(string source)
         {
             return Regex.Replace(source, @"\s", string.Empty);
