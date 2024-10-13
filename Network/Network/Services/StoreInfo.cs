@@ -49,12 +49,21 @@ namespace Network.Services
             if (productNode == null)
             {
                 Console.WriteLine("Product node is null.");
-                return product; // You can handle this case differently if needed
+                return product;
             }
+            try
+            {
 
-            // Extract memory information
-            product.Memory = _extractProduct.ExtractProductMemory(productNode);
+                // Extract memory information
+                product.Memory = _extractProduct.ExtractProductMemory(productNode);
+                return product;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error extracting product details: {ex.Message}");
+            }
             return product;
+
         }
 
 
@@ -83,5 +92,9 @@ namespace Network.Services
             return filteredProducts;
         }
 
+        internal void StoreAdditionalInfo(string htmlContentProducts, Product product)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
