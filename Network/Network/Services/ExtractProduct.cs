@@ -1,10 +1,12 @@
 ﻿using HtmlAgilityPack;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 namespace Network.Services
 {
     public class ExtractProduct
     {
         private Validation _validation;
-        public ExtractProduct() 
+        public ExtractProduct()
         {
             _validation = new Validation();
         }
@@ -20,29 +22,59 @@ namespace Network.Services
             string price = priceNode != null ? priceNode.InnerText.Trim() : string.Empty;
             return _validation.ValidProduct(price.Trim());
         }
-        public string ExtractProductMemory(string htmlContent)
+        public string ExtractLink(HtmlNode productNode)
         {
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(htmlContent);
-            var productNode = htmlDoc.DocumentNode.SelectSingleNode("\".//div[contains(@class, 'grid-item')]//figcaption//a[contains(@class, 'ga-item')]\"\r\n");
-           
-            if (productNode != null)
+            var linkNode = productNode.SelectSingleNode(".//a[contains(@class, 'ga-item')]");
+            string link = linkNode != null ? linkNode.GetAttributeValue("href", string.Empty) : string.Empty;
+            return link;
+        }
+
+        public string ExtractProductMemory(HtmlNode productNode)
+        {
+            var ga4Data = productNode.GetAttributeValue("data-ga4", string.Empty);
+            if (!string.IsNullOrEmpty(ga4Data))
             {
-                var features = productNode.SelectNodes(".//li");
-                if (features != null)
+                // Extract JSON part
+                var jsonStartIndex = ga4Data.IndexOf("{");
+                if (jsonStartIndex >= 0)
                 {
-                    foreach (var feature in features)
+                    var json = ga4Data.Substring(jsonStartIndex);
+                    try
                     {
-                        if (feature.InnerText.Trim().Contains("Memorie"))
+                        JsonNode jsonNode = JsonNode.Parse(json);
+
+                        // Check if the JSON structure contains "items"
+                        if (jsonNode != null && jsonNode["ecommerce"]?["items"] is JsonArray items)
                         {
-                            var memoryDescription = feature.InnerText.Trim();
-                            return _validation.ValidMemory(memoryDescription.Split(":")[1]);
+                            // Ensure items is not empty
+                            if (items.Count > 0)
+                            {
+                                // Access the first item
+                                var item = items[0];
+                                // Check if the item contains "item_variant"
+                                if (item["item_variant"] != null)
+                                {
+                                    string itemVariant = item["item_variant"].ToString();
+                                    // Split the variant string to get the memory
+                                    string[] variants = itemVariant.Split("|");
+
+                                    // Check if the second part (index 1) contains memory info
+                                    if (variants.Length > 1)
+                                    {
+                                        return variants[1].Trim(); // This should be "32 GB"
+                                    }
+                                }
+                            }
                         }
+                    }
+                    catch (JsonException jsonEx)
+                    {
+                        Console.WriteLine($"JSON Parsing Error: {jsonEx.Message}");
+                        return "Memory not found";
                     }
                 }
             }
             return "Memory not found";
         }
-
     }
 }

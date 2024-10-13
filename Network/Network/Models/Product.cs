@@ -13,7 +13,8 @@ namespace Network.Models
         public string? Name { get; set; }
         public decimal Price { get; set; }
         public string Currency { get; set; }
-        public object Link { get; internal set; }
+        public string Memory { get; set; }
+        public string Link { get; set; }
     }
 
 }
