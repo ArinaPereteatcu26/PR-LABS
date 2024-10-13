@@ -92,9 +92,5 @@ namespace Network.Services
             return filteredProducts;
         }
 
-        internal void StoreAdditionalInfo(string htmlContentProducts, Product product)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

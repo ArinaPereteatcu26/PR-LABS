@@ -7,8 +7,8 @@
       "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\services\\extractproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\services\\extractproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +18,33 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ExtractProduct.cs",
+              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\ExtractProduct.cs",
+              "RelativeDocumentMoniker": "Network\\Services\\ExtractProduct.cs",
+              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\ExtractProduct.cs",
+              "RelativeToolTip": "Network\\Services\\ExtractProduct.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAAAwwE8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-13T17:32:00.158Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Program.cs",
               "RelativeDocumentMoniker": "Network\\Program.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Program.cs*",
-              "RelativeToolTip": "Network\\Program.cs*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIsAAAAAAAAAAAAAAA==",
+              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Program.cs",
+              "RelativeToolTip": "Network\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-11T07:19:15.534Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Product.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Models\\Product.cs",
-              "RelativeDocumentMoniker": "Network\\Models\\Product.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Models\\Product.cs",
-              "RelativeToolTip": "Network\\Models\\Product.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-11T14:52:52.652Z"
             }
           ]
         },

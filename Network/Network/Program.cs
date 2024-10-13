@@ -1,4 +1,5 @@
-﻿using Network.Mappers;
+﻿using HtmlAgilityPack;
+using Network.Mappers;
 using Network.Models;
 using Network.Services;
 
@@ -13,7 +14,9 @@ if (products != null && products.Count > 0)
     foreach (var product in products)
     {
         var htmlContentProducts = await requestSite.GetSiteContent(product.Link);
-        storeInfoService.StoreAdditionalInfo(htmlContentProducts, product);
+        var htmlDocProduct = new HtmlDocument();
+        htmlDocProduct.LoadHtml(htmlContentProducts);
+        storeInfoService.StoreAdditionalInfo(htmlDocProduct.DocumentNode, product);
     }
 }
 
