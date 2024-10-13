@@ -14,5 +14,4 @@ namespace Network.Models
         public string? Price { get; set; }
     }
 
-
 }

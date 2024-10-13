@@ -1,141 +1,139 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
-using HtmlAgilityPack;
+using System.Net.Sockets;
+using System.Net.Security;
+using System.Text;
+using System.Text.RegularExpressions;
 
-class Program
+namespace Lab1.Services
 {
-    static async Task Main(string[] args)
+    public class RequestSiteService
     {
-        using (HttpClient client = new HttpClient())
+        public async Task<string> GetSiteContent(string siteName)
         {
-            // Set a User-Agent header to mimic a browser
-            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36");
-
-            try
+            using (HttpClient client = new HttpClient())
             {
-                // Send the GET request
-                HttpResponseMessage response = await client.GetAsync("https://enter.online/laptopuri");
-
-                // Output the status code
-                Console.WriteLine($"Status Code: {response.StatusCode}");
-
-                // Check if the request was successful
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    Console.WriteLine("Request was successful.");
+                    // Send an HTTP GET request to the specified URL
+                    HttpResponseMessage response = await client.GetAsync(siteName);
 
-                    // Read the response content as a string
-                    string html = await response.Content.ReadAsStringAsync();
-
-                    // Load the HTML document
-                    var htmlDoc = new HtmlDocument();
-                    htmlDoc.LoadHtml(html);
-
-                    // Extract product elements (adjust XPath as necessary)
-                    var products = htmlDoc.DocumentNode.SelectNodes("//div[contains(@class, 'product')]");
-
-                    if (products != null)
+                    // Check if the response was successful
+                    if (response.IsSuccessStatusCode)
                     {
-                        Console.WriteLine("Found products:");
-                        foreach (var product in products)
-                        {
-                            // Adjust these XPaths based on actual HTML structure
-                            var nameNode = product.SelectSingleNode(".//h2[contains(@class, 'product-name')]"); // Product name
-                            var priceNode = product.SelectSingleNode(".//span[contains(@class, 'price')]"); // Price
-                            var imageNode = product.SelectSingleNode(".//img[contains(@class, 'product-image')]"); // Image
-                            var linkNode = product.SelectSingleNode(".//a[contains(@class, 'product-link')]"); // Product link
-
-                            // Extract and trim text values
-                            var nameText = nameNode?.InnerText.Trim();
-                            var priceText = priceNode?.InnerText.Trim();
-                            var imageUrl = imageNode?.GetAttributeValue("src", "No image found");
-                            var productLink = linkNode?.GetAttributeValue("href", "No link found");
-
-                            // Validate product data before storing
-                            if (IsValidProduct(nameText, priceText))
-                            {
-                                // Print product details
-                                Console.WriteLine($"Product Name: {nameText}, Price: {priceText}, Image URL: {imageUrl}, Product Link: {productLink}");
-
-                                // Extract additional data from the product link
-                                await ExtractAdditionalData(client, productLink);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Invalid product data. Skipping.");
-                            }
-                        }
+                        // Read the HTML content of the response
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+                        return htmlContent;
                     }
                     else
                     {
-                        Console.WriteLine("No products found.");
+                        Console.WriteLine($"Error: {response.StatusCode}");
+                        return string.Empty;
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("Request failed.");
+                    // Handle any exceptions that occur during the request
+                    Console.WriteLine($"An error occurred: {ex.Message}");
+                    return string.Empty;
                 }
             }
-            catch (HttpRequestException e)
+        }
+
+        public async Task<string> GetSiteContentTCP(string siteName)
+        {
+            try
             {
-                // Handle exceptions
-                Console.WriteLine($"Request error: {e.Message}");
+                // Extract host and resource path from the siteName (URL)
+                Uri uri = new Uri(siteName);
+                string host = uri.Host;
+                string path = uri.PathAndQuery;
+
+                // Connect to the server using a TCP socket
+                using (TcpClient client = new TcpClient(host, 443)) // Using port 443 for HTTPS
+                using (NetworkStream networkStream = client.GetStream())
+                using (SslStream sslStream = new SslStream(networkStream, false,
+                    new RemoteCertificateValidationCallback((sender, certificate, chain, sslPolicyErrors) => true), // Accept any certificate
+                    null))
+                {
+                    // Authenticate the server certificate
+                    await sslStream.AuthenticateAsClientAsync(host);
+
+                    // Build and send the HTTP GET request
+                    string httpRequest = $"GET {path} HTTP/1.1\r\n" +
+                                         $"Host: {host}\r\n" +
+                                         "Connection: close\r\n" + // Close the connection after the response
+                                         "\r\n"; // End of headers
+
+                    byte[] requestBytes = Encoding.ASCII.GetBytes(httpRequest);
+                    await sslStream.WriteAsync(requestBytes, 0, requestBytes.Length);
+                    await sslStream.FlushAsync();
+
+                    // Read the response from the server
+                    StringBuilder responseBuilder = new StringBuilder();
+                    char[] buffer = new char[1024];
+                    int bytesRead;
+
+                    using (StreamReader reader = new StreamReader(sslStream, Encoding.UTF8))
+                    {
+                        while ((bytesRead = await reader.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        {
+                            responseBuilder.Append(buffer, 0, bytesRead);
+                        }
+                    }
+
+                    string fullResponse = responseBuilder.ToString();
+
+                    // Extract the HTTP body (after the header)
+                    string httpBody = ExtractHttpResponseBody(fullResponse);
+
+                    // Now we can extract the title and price from the body
+                    string extractedData = ExtractTitleAndPrice(httpBody);
+
+                    return extractedData;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that occur during the request
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return string.Empty;
             }
         }
-    }
 
-    static async Task ExtractAdditionalData(HttpClient client, string productLink)
-    {
-        try
+        // Method to extract the HTTP response body from the full response
+        private string ExtractHttpResponseBody(string httpResponse)
         {
-            // Send the GET request to the product link
-            HttpResponseMessage productResponse = await client.GetAsync(productLink);
+            // Find the end of the HTTP headers
+            int headerEndIndex = httpResponse.IndexOf("\r\n\r\n");
 
-            if (productResponse.IsSuccessStatusCode)
+            if (headerEndIndex != -1)
             {
-                // Read the response content as a string
-                string productHtml = await productResponse.Content.ReadAsStringAsync();
-
-                // Load the HTML document
-                var productDoc = new HtmlDocument();
-                productDoc.LoadHtml(productHtml);
-
-                // Extract additional data (e.g., product description)
-                var descriptionNode = productDoc.DocumentNode.SelectSingleNode("//div[contains(@class, 'product-description')]"); // Adjust XPath as necessary
-                var descriptionText = descriptionNode?.InnerText.Trim() ?? "No description found";
-
-                // Print additional product details
-                Console.WriteLine($"Product Description: {descriptionText}");
+                // The body starts right after the headers
+                return httpResponse.Substring(headerEndIndex + 4);
             }
             else
             {
-                Console.WriteLine("Failed to fetch product details.");
+                return string.Empty;
             }
         }
-        catch (HttpRequestException e)
-        {
-            // Handle exceptions
-            Console.WriteLine($"Error fetching product details: {e.Message}");
-        }
-    }
 
-    static bool IsValidProduct(string name, string price)
-    {
-        // Check for empty values
-        if (string.IsNullOrEmpty(name))
+        // Method to extract the product title and price
+        private string ExtractTitleAndPrice(string html)
         {
-            Console.WriteLine("Product name is empty.");
-            return false;
-        }
+            // Extract the product title from the "title" attribute of <a> or <img>
+            var titleMatch = Regex.Match(html, "title=\"([^\"]+)\"");
+            string productTitle = titleMatch.Success ? titleMatch.Groups[1].Value : "No title found";
 
-        // Check if price is a valid number and greater than zero
-        if (!decimal.TryParse(price, out decimal parsedPrice) || parsedPrice <= 0)
-        {
-            Console.WriteLine("Invalid price value.");
-            return false;
-        }
+            // Extract the product price from the "data-ga4" JSON-like attribute
+            var priceMatch = Regex.Match(html, "\"price\":(\\d+)");
+            string productPrice = priceMatch.Success ? priceMatch.Groups[1].Value : "No price found";
 
-        return true;
+            // Return the extracted data in the desired format
+            return $"Product: {productTitle}\nPrice: {productPrice}";
+        }
     }
 }
+
