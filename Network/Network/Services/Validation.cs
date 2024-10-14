@@ -20,9 +20,9 @@ namespace Network.Services
             }
         }
 
-        public string ValidMemory(string memory)
+        public string ValidVideoCardType(string videoCardType)
         {
-            return RemoveWhitespacesUsingRegex(memory);
+            return RemoveWhitespacesUsingRegex(videoCardType);
         }
 
         

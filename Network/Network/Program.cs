@@ -16,7 +16,7 @@ if (products != null && products.Count > 0)
         var htmlContentProducts = await requestSite.GetSiteContent(product.Link);
         var htmlDocProduct = new HtmlDocument();
         htmlDocProduct.LoadHtml(htmlContentProducts);
-        storeInfoService.StoreAdditionalInfo(htmlDocProduct.DocumentNode, product);
+        storeInfoService.StoreAdditionalInfo(htmlContentProducts, product);
     }
 }
 
@@ -57,5 +57,5 @@ foreach (var product in customDeserialized)
     Console.WriteLine(product.Name);
     Console.WriteLine(product.Price);
     Console.WriteLine(product.Link);
-    Console.WriteLine(product.Memory + "\n");
+    Console.WriteLine(product.VideoCardType + "\n");
 }

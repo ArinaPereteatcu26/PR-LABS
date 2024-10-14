@@ -29,19 +29,30 @@ namespace Network.Services
             return link;
         }
 
-        public string ExtractImage(HtmlNode productNode)
-        {
-            var imageNode = productNode.SelectSingleNode(".//img[contains(@class, 'product-image')]");
-            string imageUrl = imageNode != null ? imageNode.GetAttributeValue("src", string.Empty) : string.Empty;
-            return imageUrl;
-        }
 
-        public string ExtractBrand(HtmlNode productNode)
-        {
-            var brandNode = productNode.SelectSingleNode(".//div[contains(@class, 'brand-name')]");
-            string brand = brandNode != null ? brandNode.InnerText.Trim() : string.Empty;
-            return brand;
-        }
 
+        public string ExtractVideoCardType(string htmlContent)
+        {
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(htmlContent);
+            var productNode = htmlDoc.DocumentNode.SelectSingleNode("//div[contains(@class, 'main-description')]//ul[contains(@class, 'features')]");
+            if (productNode != null)
+            {
+                var features = productNode.SelectNodes(".//li");
+                if (features != null)
+                {
+                    foreach (var feature in features)
+                    {
+                        if (feature.InnerText.Trim().Contains("Tip placă video"))
+                        {
+                            var videoCardDescription = feature.InnerText.Trim();
+                            return _validation.ValidVideoCardType(videoCardDescription.Split(":")[1]);
+                        }
+                    }
+                }
+            }
+            return "Video Card Type not found";
+            
+        }
     }
 }

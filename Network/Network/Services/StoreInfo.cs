@@ -2,6 +2,7 @@
 using Network.Models;
 using HtmlAgilityPack;
 using Network.Filter;
+using Network.Services;
 
 
 namespace Network.Services
@@ -30,7 +31,8 @@ namespace Network.Services
                     {
                         Name = _extractProduct.ExtractName(productNode),
                         Price = _extractProduct.ExtractPrice(productNode),
-                        Link = _extractProduct.ExtractLink(productNode)
+                        Link = _extractProduct.ExtractLink(productNode),
+                        
                     };
                     // Console.WriteLine($"Product: {product.Name}, Price: {product.Price}, Link: {product.Link}");
                     _products.Add(product);
@@ -43,27 +45,11 @@ namespace Network.Services
                 return null;
             }
         }
-        public Product StoreAdditionalInfo(HtmlNode productNode, Product product)
+        public Product StoreAdditionalInfo(string htmlContent, Product product)
         {
-            // Check if the productNode is null
-            if (productNode == null)
-            {
-                Console.WriteLine("Product node is null.");
-                return product;
-            }
-            try
-            {
+            product.VideoCardType = _extractProduct.ExtractVideoCardType(htmlContent);
 
-                // Extract memory information
-                product.Memory = _extractProduct.ExtractProductMemory(productNode);
-                return product;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error extracting product details: {ex.Message}");
-            }
             return product;
-
         }
 
 
@@ -83,7 +69,7 @@ namespace Network.Services
                     Name = product.Name,
                     Price = product.Price,
                     Link = product.Link,
-                    Resolution = product.Memory,
+                    VideoCardType = product.VideoCardType,
                     TotalPrice = totalPrice,
                     Date = DateTime.Now
                 };
