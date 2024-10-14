@@ -29,52 +29,19 @@ namespace Network.Services
             return link;
         }
 
-        public string ExtractProductMemory(HtmlNode productNode)
+        public string ExtractImage(HtmlNode productNode)
         {
-            var ga4Data = productNode.GetAttributeValue("data-ga4", string.Empty);
-            if (!string.IsNullOrEmpty(ga4Data))
-            {
-                // Extract JSON part
-                var jsonStartIndex = ga4Data.IndexOf("{");
-                if (jsonStartIndex >= 0)
-                {
-                    var json = ga4Data.Substring(jsonStartIndex);
-                    try
-                    {
-                        JsonNode jsonNode = JsonNode.Parse(json);
-
-                        // Check if the JSON structure contains "items"
-                        if (jsonNode != null && jsonNode["ecommerce"]?["items"] is JsonArray items)
-                        {
-                            // Ensure items is not empty
-                            if (items.Count > 0)
-                            {
-                                // Access the first item
-                                var item = items[0];
-                                // Check if the item contains "item_variant"
-                                if (item["item_variant"] != null)
-                                {
-                                    string itemVariant = item["item_variant"].ToString();
-                                    // Split the variant string to get the memory
-                                    string[] variants = itemVariant.Split("|");
-
-                                    // Check if the second part (index 1) contains memory info
-                                    if (variants.Length > 1)
-                                    {
-                                        return variants[1].Trim(); // This should be "32 GB"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch (JsonException jsonEx)
-                    {
-                        Console.WriteLine($"JSON Parsing Error: {jsonEx.Message}");
-                        return "Memory not found";
-                    }
-                }
-            }
-            return "Memory not found";
+            var imageNode = productNode.SelectSingleNode(".//img[contains(@class, 'product-image')]");
+            string imageUrl = imageNode != null ? imageNode.GetAttributeValue("src", string.Empty) : string.Empty;
+            return imageUrl;
         }
+
+        public string ExtractBrand(HtmlNode productNode)
+        {
+            var brandNode = productNode.SelectSingleNode(".//div[contains(@class, 'brand-name')]");
+            string brand = brandNode != null ? brandNode.InnerText.Trim() : string.Empty;
+            return brand;
+        }
+
     }
 }

@@ -7,7 +7,7 @@
         public string? Name { get; set; }
         public decimal Price { get; set; }
         public string Currency { get; set; }
-        public string Memory { get; set; }
+        public string Brand { get; set; }
         public string Link { get; set; }
     }
 

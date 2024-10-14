@@ -24,11 +24,38 @@ var serializationService = new SerializationLogic();
 var json = serializationService.SerializeListToJson(products);
 var xml = serializationService.SerializeListToXML(products);
 
-var customSerializationService = new CustomSerialization();
-var customSerialized = customSerializationService.SerializeList(products);
+File.WriteAllText("productsInicial.json", json);
+File.WriteAllText("productsInicial.xml", xml);
 
 var priceMapper = new Mappers();
 var productsInEuro = priceMapper.CurrencyConversion(products);
-var filteredProducts = priceMapper.FilterProductsByPrice(productsInEuro, 100, 250);
+var jsonEuro = serializationService.SerializeListToJson(productsInEuro);
+var xmlEuro = serializationService.SerializeListToXML(productsInEuro);
 
+File.WriteAllText("productsInEuro.json", jsonEuro);
+File.WriteAllText("productsInEuro.xml", xmlEuro);
+
+
+var filteredProducts = priceMapper.FilterProductsByPrice(productsInEuro, 100, 250);
 var filteredProductsTotalPrice = storeInfoService.StoreProductsWithTotalPrice(filteredProducts, priceMapper.SumPrices(filteredProducts));
+
+var jsonFilteredTotalPrice = serializationService.SerializeListToJson(filteredProductsTotalPrice);
+var xmlFilteredTotalPrice = serializationService.SerializeListToXML(filteredProductsTotalPrice);
+
+File.WriteAllText("productsFilteredTotalPrice.json", jsonFilteredTotalPrice);
+File.WriteAllText("productsFilteredTotalPrice.xml", xmlFilteredTotalPrice);
+
+var customSerializationService = new CustomSerialization();
+var customSerialized = customSerializationService.SerializeList(products);
+File.WriteAllText("productsCustomSerialized.txt", customSerialized);
+
+List<Product> customDeserialized = customSerializationService.DeserializeList<Product>(customSerialized);
+Console.WriteLine(customDeserialized.Count);
+foreach (var product in customDeserialized)
+{
+    Console.WriteLine("Product");
+    Console.WriteLine(product.Name);
+    Console.WriteLine(product.Price);
+    Console.WriteLine(product.Link);
+    Console.WriteLine(product.Memory + "\n");
+}

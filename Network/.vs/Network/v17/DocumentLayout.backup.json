@@ -3,44 +3,12 @@
   "WorkspaceRootPath": "E:\\PR-LABS\\Network\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\services\\storeinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\services\\storeinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\services\\request.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\services\\request.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\services\\serializationlogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\services\\serializationlogic.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\services\\customserialization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\services\\customserialization.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\mappers\\mappers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\mappers\\mappers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\filter\\filteredproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\filter\\filteredproducts.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\services\\validation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\services\\validation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\services\\extractproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\services\\extractproduct.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|e:\\pr-labs\\network\\network\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A0BBE4A2-9406-4B91-B911-F5EAAAEC13A8}|Network\\Network.csproj|solutionrelative:network\\models\\product.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,136 +18,31 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Mappers.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Mappers\\Mappers.cs",
-              "RelativeDocumentMoniker": "Network\\Mappers\\Mappers.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Mappers\\Mappers.cs",
-              "RelativeToolTip": "Network\\Mappers\\Mappers.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T17:01:27.447Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "FilteredProducts.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Filter\\FilteredProducts.cs",
-              "RelativeDocumentMoniker": "Network\\Filter\\FilteredProducts.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Filter\\FilteredProducts.cs",
-              "RelativeToolTip": "Network\\Filter\\FilteredProducts.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T17:01:17.63Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "CustomSerialization.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\CustomSerialization.cs",
-              "RelativeDocumentMoniker": "Network\\Services\\CustomSerialization.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\CustomSerialization.cs",
-              "RelativeToolTip": "Network\\Services\\CustomSerialization.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAwAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T14:08:14.89Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Request.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\Request.cs",
-              "RelativeDocumentMoniker": "Network\\Services\\Request.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\Request.cs",
-              "RelativeToolTip": "Network\\Services\\Request.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T12:53:13.156Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "StoreInfo.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\StoreInfo.cs",
-              "RelativeDocumentMoniker": "Network\\Services\\StoreInfo.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\StoreInfo.cs",
-              "RelativeToolTip": "Network\\Services\\StoreInfo.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADYAAAANAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T13:33:43.483Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Program.cs",
-              "RelativeDocumentMoniker": "Network\\Program.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Program.cs",
-              "RelativeToolTip": "Network\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAmwBMAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-11T07:19:15.534Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SerializationLogic.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\SerializationLogic.cs",
-              "RelativeDocumentMoniker": "Network\\Services\\SerializationLogic.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\SerializationLogic.cs",
-              "RelativeToolTip": "Network\\Services\\SerializationLogic.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAYwAQAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T14:04:49.583Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Product.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Models\\Product.cs",
-              "RelativeDocumentMoniker": "Network\\Models\\Product.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Models\\Product.cs",
-              "RelativeToolTip": "Network\\Models\\Product.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T13:39:59.306Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
               "Title": "ExtractProduct.cs",
               "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\ExtractProduct.cs",
               "RelativeDocumentMoniker": "Network\\Services\\ExtractProduct.cs",
               "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\ExtractProduct.cs",
               "RelativeToolTip": "Network\\Services\\ExtractProduct.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAfAAAAAAAAAA==",
+              "ViewState": "AgIAACIAAAAAAAAAAAAwwE8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T13:12:44.42Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-13T17:32:00.158Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Validation.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\Validation.cs",
-              "RelativeDocumentMoniker": "Network\\Services\\Validation.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\Validation.cs",
-              "RelativeToolTip": "Network\\Services\\Validation.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAWAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Program.cs",
+              "RelativeDocumentMoniker": "Network\\Program.cs",
+              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Program.cs",
+              "RelativeToolTip": "Network\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-13T12:40:21.667Z",
+              "WhenOpened": "2024-10-11T07:19:15.534Z",
               "EditorCaption": ""
             }
           ]
