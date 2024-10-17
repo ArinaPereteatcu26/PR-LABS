@@ -6,17 +6,17 @@ namespace Network.Services
     {
         public string SerializeToJson<T>(T obj)
         {
-            var jsonBuilder = new StringBuilder();
+            var jsonBuilder = new StringBuilder(); //construct JSON string
             jsonBuilder.Append("{");
 
-            var propreties = obj.GetType().GetProperties();
+            var propreties = obj.GetType().GetProperties();//inspect object at runtime
             for (int i = 0; i < propreties.Length; i++)
             {
                 var prop = propreties[i];
                 var name = prop.Name;
                 var value = prop.GetValue(obj);
 
-                jsonBuilder.Append($"\"{name}\": \"{value}\"");
+                jsonBuilder.Append($"\"{name}\": \"{value}\"");//key-value pair
 
                 if (i < propreties.Length - 1)
                 {
@@ -49,6 +49,7 @@ namespace Network.Services
             return xmlBuilder.ToString();
         }
 
+        //serialize object of type T into JSON array string
         public string SerializeListToJson<T>(List<T> objList)
         {
             var jsonBuilder = new StringBuilder();

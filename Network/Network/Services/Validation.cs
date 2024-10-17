@@ -4,6 +4,7 @@ namespace Network.Services
 {
     public class Validation
     {
+        //validate and convert price string into decimal
         public decimal ValidProduct(string price)
         {
             // Remove whitespaces and validate conversion to decimal

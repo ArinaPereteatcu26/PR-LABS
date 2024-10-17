@@ -14,6 +14,8 @@ namespace Network.Services
             var typeName = obj.GetType().Name;
             serialized.Append($"[{typeName}]");
 
+            //retrive public instance properties of the object using reflection
+
             var properties = obj.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
             foreach (var prop in properties)
@@ -22,10 +24,12 @@ namespace Network.Services
                 var value = prop.GetValue(obj);
 
                 // Handle nested objects
+                //check if not null or simple type
                 if (value != null && !IsSimpleType(value.GetType()))
                 {
                     serialized.Append($"{name}<{Serialize(value)};");
                 }
+                //if simple value it returns the format
                 else
                 {
                     serialized.Append($"{name}<{value};");
@@ -38,9 +42,9 @@ namespace Network.Services
         // Serialize a list of objects
         public string SerializeList<T>(List<T> objList)
         {
-            if (objList == null || objList.Count == 0) return "[]";
+            if (objList == null || objList.Count == 0) return "[]"; //indicate empty string
 
-            var serialized = new StringBuilder("[List]");
+            var serialized = new StringBuilder("[List]"); //serialized data is list
 
             foreach (var obj in objList)
             {
@@ -52,6 +56,7 @@ namespace Network.Services
         }
 
         // Deserialize an object from custom format
+
         public T Deserialize<T>(string serializedData) where T : new()
         {
             if (string.IsNullOrEmpty(serializedData)) return default;
@@ -72,6 +77,7 @@ namespace Network.Services
                     var propertyName = keyValue[0];
                     var propertyValue = keyValue[1];
 
+                    //use reflection to find property and set the value
                     var propertyInfo = typeof(T).GetProperty(propertyName);
                     if (propertyInfo != null)
                     {

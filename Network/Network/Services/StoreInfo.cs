@@ -19,9 +19,10 @@ namespace Network.Services
 
         public List<Product>? StoreProduct(string htmlContent)
         {
-            var htmlDoc = new HtmlDocument();
+            var htmlDoc = new HtmlDocument();//mainpulate nodes
             htmlDoc.LoadHtml(htmlContent);
 
+            //see what represents products
             var productNodes = htmlDoc.DocumentNode.SelectNodes("//figure[contains(@class, 'card-product')]");
             if (productNodes != null)
             {
@@ -35,7 +36,7 @@ namespace Network.Services
                         
                     };
                     // Console.WriteLine($"Product: {product.Name}, Price: {product.Price}, Link: {product.Link}");
-                    _products.Add(product);
+                    _products.Add(product);//add created product in products list
                 }
                 return _products;
             }
@@ -52,12 +53,13 @@ namespace Network.Services
             return product;
         }
 
-
+        //return json string
         public string StoreAsJson(List<Product> products)
         {
             var json = JsonSerializer.Serialize(products);
             return json;
         }
+
 
         public List<FilteredProduct> StoreProductsWithTotalPrice(List<Product> products, decimal totalPrice)
         {
