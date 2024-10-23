@@ -27,7 +27,7 @@ namespace Network.Services
                         return string.Empty;
                     }
                 }
-                catch (Exception ex) 
+                catch (Exception ex)
                 {
                     Console.WriteLine($"Error: {ex.Message}");
                     return string.Empty;
@@ -51,7 +51,7 @@ namespace Network.Services
 
         public async Task<string> GetSiteContentTcp(string siteName)
         {
-            try 
+            try
             {
                 //create Uri object to parse components
                 Uri uri = new Uri(siteName);
@@ -59,7 +59,7 @@ namespace Network.Services
                 string path = uri.PathAndQuery; //extracts a part of URI 
 
                 //tcp connection
-                using (TcpClient client = new TcpClient(host, 80))
+                using (TcpClient client = new TcpClient(host, 443))
                 using (NetworkStream networkStream = client.GetStream())
 
                 //support SSL/TLS encryption for data integrity
@@ -131,5 +131,4 @@ namespace Network.Services
 
     }
 }
-
 

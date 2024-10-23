@@ -59,7 +59,12 @@ namespace Network.Services
 
         public T Deserialize<T>(string serializedData) where T : new()
         {
-            if (string.IsNullOrEmpty(serializedData)) return default;
+            // Ensure that T is a reference type and handle the case for empty strings.
+            if (string.IsNullOrEmpty(serializedData))
+            {
+                // Optionally, you could throw an exception here instead of returning default.
+                return new T(); // Ensure a valid instance is returned.
+            }
 
             var obj = new T();
             var typeName = typeof(T).Name;
@@ -67,26 +72,27 @@ namespace Network.Services
             // Skip the type declaration
             var dataStart = serializedData.IndexOf($"[{typeName}]") + typeName.Length + 2;
             var keyValuePairs = serializedData.Substring(dataStart)
-                                              .Split(';', StringSplitOptions.RemoveEmptyEntries);
+                                               .Split(';', StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var pair in keyValuePairs)
             {
                 var keyValue = pair.Split('<');
                 if (keyValue.Length == 2)
                 {
-                    var propertyName = keyValue[0];
-                    var propertyValue = keyValue[1];
+                    var propertyName = keyValue[0].Trim();
+                    var propertyValue = keyValue[1].Trim();
 
-                    //use reflection to find property and set the value
+                    // Use reflection to find property and set the value
                     var propertyInfo = typeof(T).GetProperty(propertyName);
-                    if (propertyInfo != null)
+                    if (propertyInfo != null && !string.IsNullOrEmpty(propertyValue))
                     {
                         var convertedValue = Convert.ChangeType(propertyValue, propertyInfo.PropertyType);
                         propertyInfo.SetValue(obj, convertedValue);
                     }
                 }
             }
-            return obj;
+
+            return obj; // Ensure a valid instance is returned.
         }
 
         // Deserialize a list of objects from custom format

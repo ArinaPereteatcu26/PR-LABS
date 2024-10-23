@@ -6,29 +6,25 @@ namespace Network.Mappers
     {
         public List<Product> CurrencyConversion(List<Product> products)
         {
-            //rate to euros
-            decimal CurrencyConversion = 0.051m;
+            decimal CurrencyConversionRate = 0.051m;
 
-            //transfom each product in collection into a new form
             var productsInEuro = products.Select(product =>
             {
-                product.Price = Math.Round(product.Price * CurrencyConversion, 2);
+                product.Price = Math.Round(product.Price * CurrencyConversionRate, 2);
                 return product;
-            }).ToList(); //store to productsInEuro
+            }).ToList();
+
             return productsInEuro;
         }
 
         public List<Product> FilterProductsByPrice(List<Product> products, decimal minPrice, decimal maxPrice)
         {
-          //filter elements based on condition
-            var filteredProducts = products.Where(product => product.Price >= minPrice && product.Price <= maxPrice).ToList();
-            return filteredProducts;
+            return products.Where(product => product.Price >= minPrice && product.Price <= maxPrice).ToList();
         }
 
         public decimal SumPrices(List<Product> products)
         {
-            decimal sum = products.Sum(product => product.Price);
-            return sum;
+            return products.Sum(product => product.Price);
         }
-    } 
+    }
 }

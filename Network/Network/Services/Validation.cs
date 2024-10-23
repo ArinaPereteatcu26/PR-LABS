@@ -21,12 +21,12 @@ namespace Network.Services
             }
         }
 
-        public string ValidVideoCardType(string videoCardType)
+        public string ValidYear(string year)
         {
-            return RemoveWhitespacesUsingRegex(videoCardType);
+            return RemoveWhitespacesUsingRegex(year);
         }
 
-        
+
         private string RemoveWhitespacesUsingRegex(string source)
         {
             return Regex.Replace(source, @"\s", string.Empty);

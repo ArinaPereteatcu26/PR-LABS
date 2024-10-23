@@ -6,19 +6,25 @@ namespace Network.Services
     {
         public string SerializeToJson<T>(T obj)
         {
-            var jsonBuilder = new StringBuilder(); //construct JSON string
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj), "Object to serialize cannot be null.");
+            }
+
+            var jsonBuilder = new StringBuilder(); // construct JSON string
             jsonBuilder.Append("{");
 
-            var propreties = obj.GetType().GetProperties();//inspect object at runtime
-            for (int i = 0; i < propreties.Length; i++)
+            var properties = obj.GetType().GetProperties(); // inspect object at runtime
+            for (int i = 0; i < properties.Length; i++)
             {
-                var prop = propreties[i];
+                var prop = properties[i];
                 var name = prop.Name;
                 var value = prop.GetValue(obj);
 
-                jsonBuilder.Append($"\"{name}\": \"{value}\"");//key-value pair
+                // Handle the case where value might be null
+                jsonBuilder.Append($"\"{name}\": \"{value?.ToString() ?? "null"}\""); // Use null-coalescing operator
 
-                if (i < propreties.Length - 1)
+                if (i < properties.Length - 1)
                 {
                     jsonBuilder.Append(",");
                 }
@@ -31,27 +37,40 @@ namespace Network.Services
 
         public string SerializeToXML<T>(T obj)
         {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj), "Object to serialize cannot be null.");
+            }
+
             var xmlBuilder = new StringBuilder();
             var typeName = obj.GetType().Name;
 
             xmlBuilder.Append($"<{typeName}>");
 
-            var propreties = obj.GetType().GetProperties();
-            foreach (var prop in propreties)
+            var properties = obj.GetType().GetProperties();
+            foreach (var prop in properties)
             {
                 var name = prop.Name;
                 var value = prop.GetValue(obj);
 
-                xmlBuilder.Append($"<{name}>{value}</{name}>");
+                // Handle null value for XML serialization
+                xmlBuilder.Append($"<{name}>{value?.ToString() ?? "null"}</{name}>"); // Use null-coalescing operator
             }
+
             xmlBuilder.Append($"</{typeName}>");
 
             return xmlBuilder.ToString();
         }
 
+
         //serialize object of type T into JSON array string
         public string SerializeListToJson<T>(List<T> objList)
         {
+            if (objList == null)
+            {
+                throw new ArgumentNullException(nameof(objList), "The list to serialize cannot be null.");
+            }
+
             var jsonBuilder = new StringBuilder();
             jsonBuilder.Append("[");
 
@@ -71,8 +90,12 @@ namespace Network.Services
 
         public string SerializeListToXML<T>(List<T> objList)
         {
-            var xmlBuilder = new StringBuilder();
+            if (objList == null)
+            {
+                throw new ArgumentNullException(nameof(objList), "The list to serialize cannot be null.");
+            }
 
+            var xmlBuilder = new StringBuilder();
             var typeName = typeof(T).Name + "List";
             xmlBuilder.Append($"<{typeName}>");
 
@@ -86,5 +109,3 @@ namespace Network.Services
         }
     }
 }
-    
-

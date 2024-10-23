@@ -58,13 +58,13 @@
               "target": "Package",
               "version": "[1.11.67, )"
             },
-            "HtmlAgilityPack.CssSelectors": {
-              "target": "Package",
-              "version": "[1.0.2, )"
-            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[8.0.5, )"
             }
           },
           "imports": [

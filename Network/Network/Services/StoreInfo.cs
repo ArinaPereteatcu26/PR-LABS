@@ -23,7 +23,7 @@ namespace Network.Services
             htmlDoc.LoadHtml(htmlContent);
 
             //see what represents products
-            var productNodes = htmlDoc.DocumentNode.SelectNodes("//figure[contains(@class, 'card-product')]");
+            var productNodes = htmlDoc.DocumentNode.SelectNodes("//div[contains(@class, 'book-list-v3')]//div[contains(@class, 'anyproduct-card')]");
             if (productNodes != null)
             {
                 foreach (var productNode in productNodes)
@@ -33,7 +33,7 @@ namespace Network.Services
                         Name = _extractProduct.ExtractName(productNode),
                         Price = _extractProduct.ExtractPrice(productNode),
                         Link = _extractProduct.ExtractLink(productNode),
-                        
+
                     };
                     // Console.WriteLine($"Product: {product.Name}, Price: {product.Price}, Link: {product.Link}");
                     _products.Add(product);//add created product in products list
@@ -48,7 +48,7 @@ namespace Network.Services
         }
         public Product StoreAdditionalInfo(string htmlContent, Product product)
         {
-            product.VideoCardType = _extractProduct.ExtractVideoCardType(htmlContent);
+            product.Year = _extractProduct.ExtractYear(htmlContent);
 
             return product;
         }
@@ -71,7 +71,7 @@ namespace Network.Services
                     Name = product.Name,
                     Price = product.Price,
                     Link = product.Link,
-                    VideoCardType = product.VideoCardType,
+                    Year = product.Year,
                     TotalPrice = totalPrice,
                     Date = DateTime.Now
                 };
