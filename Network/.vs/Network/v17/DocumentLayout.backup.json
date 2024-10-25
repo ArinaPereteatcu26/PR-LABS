@@ -50,21 +50,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CustomSerialization.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\CustomSerialization.cs",
-              "RelativeDocumentMoniker": "Network\\Services\\CustomSerialization.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\CustomSerialization.cs",
-              "RelativeToolTip": "Network\\Services\\CustomSerialization.cs",
-              "ViewState": "AgIAAEoAAAAAAAAAAAAwwGAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-17T15:16:44.844Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Document",
               "DocumentIndex": 5,
@@ -112,9 +99,22 @@
               "RelativeDocumentMoniker": "Network\\Services\\ExtractProduct.cs",
               "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\ExtractProduct.cs",
               "RelativeToolTip": "Network\\Services\\ExtractProduct.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAAAQwCsAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-18T12:37:48.214Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CustomSerialization.cs",
+              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Services\\CustomSerialization.cs",
+              "RelativeDocumentMoniker": "Network\\Services\\CustomSerialization.cs",
+              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Services\\CustomSerialization.cs",
+              "RelativeToolTip": "Network\\Services\\CustomSerialization.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAwwGAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-17T15:16:44.844Z",
               "EditorCaption": ""
             },
             {
