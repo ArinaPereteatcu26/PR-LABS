@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductAPI.Data;
-using ProductAPI.Dtos; 
+using ProductAPI.Dtos;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,7 @@ namespace ProductAPI.Controllers
 
         public ProductsController(ProductContext context)
         {
-            _context = context; 
+            _context = context;
         }
 
         // Create
@@ -41,28 +41,6 @@ namespace ProductAPI.Controllers
 
             return product;
         }
-
-        // Read pagination
-        [HttpGet]
-        public async Task<ActionResult<PaginatedList<Product>>> GetProducts(int offset = 0, int limit = 5, string name = null)
-        {
-           
-            var totalCount = await _context.Products.CountAsync();
-            var productsQuery = string.IsNullOrEmpty(name)
-                ? _context.Products
-                : _context.Products.Where(p => p.Name.Contains(name));
-
-            var products = await productsQuery
-                .Skip(offset)
-                .Take(limit)
-                .ToListAsync();
-
-           
-            var totalPages = (int)Math.Ceiling(totalCount / (double)limit);
-            var paginatedList = new PaginatedList<Product>(products, (offset / limit) + 1, totalPages);          
-            return Ok(paginatedList);
-        }
-
 
         // Update 
         [HttpPut("{id}")]
