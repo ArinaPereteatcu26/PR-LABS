@@ -1,4 +1,4 @@
-﻿namespace ProductAPI.Dtos
+﻿namespace BookAPI.Dtos
 {
     public class ProductDto
     {

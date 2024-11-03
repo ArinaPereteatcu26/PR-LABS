@@ -62,8 +62,7 @@
               "RelativeToolTip": "Network\\Program.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-17T18:54:12.398Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-17T18:54:12.398Z"
             },
             {
               "$type": "Document",
@@ -88,8 +87,7 @@
               "RelativeToolTip": "Network\\Services\\ExtractProduct.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAgwCsAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T12:37:48.214Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-18T12:37:48.214Z"
             },
             {
               "$type": "Document",
@@ -101,8 +99,7 @@
               "RelativeToolTip": "Network\\Services\\CustomSerialization.cs",
               "ViewState": "AgIAAFkAAAAAAAAAAAAgwCIAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-17T15:16:44.844Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-17T15:16:44.844Z"
             },
             {
               "$type": "Document",
@@ -114,8 +111,7 @@
               "RelativeToolTip": "Network\\Services\\StoreInfo.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAAACAAAABIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T08:21:30.889Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-23T08:21:30.889Z"
             },
             {
               "$type": "Document",
@@ -127,8 +123,7 @@
               "RelativeToolTip": "Network\\Services\\Validation.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T08:21:49.078Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-23T08:21:49.078Z"
             },
             {
               "$type": "Document",
@@ -140,8 +135,7 @@
               "RelativeToolTip": "Network\\Models\\Product.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAA2wBQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T08:22:30.4Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-23T08:22:30.4Z"
             },
             {
               "$type": "Document",
@@ -153,8 +147,7 @@
               "RelativeToolTip": "Network\\Filter\\FilteredProducts.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T08:22:13.868Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-23T08:22:13.868Z"
             },
             {
               "$type": "Document",
@@ -166,8 +159,7 @@
               "RelativeToolTip": "Network\\Services\\SerializationLogic.cs",
               "ViewState": "AgIAAFoAAAAAAAAAAAAwwG4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T14:31:18.506Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-18T14:31:18.506Z"
             },
             {
               "$type": "Document",
@@ -179,8 +171,7 @@
               "RelativeToolTip": "Network\\Services\\Request.cs",
               "ViewState": "AgIAAF8AAAAAAAAAAAAgwDAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-23T08:20:46.629Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-23T08:20:46.629Z"
             }
           ]
         },

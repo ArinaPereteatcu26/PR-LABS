@@ -1,0 +1,14 @@
+[
+    {
+        "Name": "Book One",
+        "Price": 9.99,
+        "Year": 2023,
+        "Link": "http://example.com/book-one"
+    },
+    {
+        "Name": "Book Two",
+        "Price": 19.99,
+        "Year": 2022,
+        "Link": "http://example.com/book-two"
+    }
+]

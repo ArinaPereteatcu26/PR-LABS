@@ -50,8 +50,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Mappers.cs",
+              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Mappers\\Mappers.cs",
+              "RelativeDocumentMoniker": "Network\\Mappers\\Mappers.cs",
+              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Mappers\\Mappers.cs",
+              "RelativeToolTip": "Network\\Mappers\\Mappers.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAIwB4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-10-18T14:44:24.767Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 6,
@@ -63,19 +76,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-17T18:54:12.398Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Mappers.cs",
-              "DocumentMoniker": "E:\\PR-LABS\\Network\\Network\\Mappers\\Mappers.cs",
-              "RelativeDocumentMoniker": "Network\\Mappers\\Mappers.cs",
-              "ToolTip": "E:\\PR-LABS\\Network\\Network\\Mappers\\Mappers.cs",
-              "RelativeToolTip": "Network\\Mappers\\Mappers.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-18T14:44:24.767Z",
-              "EditorCaption": ""
             },
             {
               "$type": "Document",
