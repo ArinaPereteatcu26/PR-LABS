@@ -1,7 +1,11 @@
-
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using BookAPI.Data;
+using BookAPI.ChatRoomApp;
+using BookAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +32,10 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Product API", Version = "v1" });
 });
 
+// Add WebSocket Manager service
+builder.Services.AddSingleton<ChatRoom>(); // Register ChatRoom as a singleton
+builder.Services.AddWebSocketManager(); // Ensure you have this extension method available in your project
+
 var app = builder.Build();
 
 // Enable CORS
@@ -49,6 +57,23 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty; // Serve Swagger UI at the app's root
 });
 
+// Enable WebSockets
+app.UseWebSockets();
+
+// Map WebSocket handler
+app.Map("/ws", async (HttpContext context, ChatRoom chatRoom) =>
+{
+    if (context.WebSockets.IsWebSocketRequest)
+    {
+        var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        chatRoom.AddConnection(webSocket); // Add the connection to the chat room
+    }
+    else
+    {
+        context.Response.StatusCode = 400; // Bad request
+    }
+});
+
 // Enable routing
 app.UseRouting();
 app.UseAuthorization();
@@ -56,5 +81,8 @@ app.UseAuthorization();
 // Map your controllers
 app.MapControllers();
 
-// Run the application
+var webSocketRoom = new ChatRoom();
+var webSocketMiddleware = new WebSocketMiddleware();
+Task.Run(() => webSocketMiddleware.StartWebSocketServer(webSocketRoom));
+
 app.Run();
