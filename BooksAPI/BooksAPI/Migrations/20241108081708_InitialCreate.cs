@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace BookAPI.Migrations
+namespace BooksAPI.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -26,16 +26,6 @@ namespace BookAPI.Migrations
                 {
                     table.PrimaryKey("PK_Books", x => x.Id);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "idx_books_name",
-                table: "Books",
-                column: "Name");
-
-            migrationBuilder.CreateIndex(
-                name: "idx_books_year",
-                table: "Books",
-                column: "Year");
         }
 
         /// <inheritdoc />

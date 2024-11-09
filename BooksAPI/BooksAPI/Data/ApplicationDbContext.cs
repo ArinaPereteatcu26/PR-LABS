@@ -4,19 +4,16 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using BooksAPI.Models;
 
-namespace BooksAPI.Data
-{
-    public class ApplicationDbContext : DbContext
+
+    namespace BooksAPI.Data
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
-        public DbSet<Book> Books { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public class ApplicationDbContext : DbContext
         {
-            modelBuilder.Entity<Book>().ToTable("Books");
+            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+                : base(options)
+            {
+            }
 
-            modelBuilder.Entity<Book>().HasIndex(b => b.Name).HasDatabaseName("idx_books_name");
-            modelBuilder.Entity<Book>().HasIndex(b => b.Year).HasDatabaseName("idx_books_year");
+            public DbSet<Book> Books { get; set; }
         }
     }
-}

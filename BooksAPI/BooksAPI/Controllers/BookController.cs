@@ -4,121 +4,122 @@ using System.Text.Json;
 using BooksAPI.Data;
 using BooksAPI.Models;
 
-
-
-[ApiController]
-[Route("api/[controller]")]
-public class BooksController : ControllerBase
+namespace BooksAPI.Controllers
 {
-    private readonly ApplicationDbContext _context;
 
-    public BooksController(ApplicationDbContext context)
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BooksController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
+        private readonly ILogger<BooksController> _logger;
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllBooks(int offset = 0, int limit = 5)
-    {
-        var totalBooks = await _context.Books.CountAsync();
-        var books = await _context.Books
-            .Skip(offset)
-            .Take(limit)
-            .ToListAsync();
-
-        var response = new
+        public BooksController(ApplicationDbContext context, ILogger<BooksController> logger)
         {
-            TotalCount = totalBooks,
-            Offset = offset,
-            Limit = limit,
-            Books = books
-        };
-
-        return Ok(response);
-    }
-
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetBook(int id)
-    {
-        var book = await _context.Books.FindAsync(id);
-        if (book == null) return NotFound();
-        return Ok(book);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateBook([FromBody] Book book)
-    {
-        _context.Books.Add(book);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateBook(int id, [FromBody] Book updatedBook)
-    {
-        var book = await _context.Books.FindAsync(id);
-        if (book == null) return NotFound();
-
-        book.Name = updatedBook.Name;
-        book.Price = updatedBook.Price;
-        book.Year = updatedBook.Year;
-        book.Link = updatedBook.Link;
-
-        await _context.SaveChangesAsync();
-        return NoContent();
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteBook(int id)
-    {
-        var book = await _context.Books.FindAsync(id);
-        if (book == null) return NotFound();
-
-        _context.Books.Remove(book);
-        await _context.SaveChangesAsync();
-        return NoContent();
-    }
-
-
-    [HttpPost("upload")]
-    public async Task<IActionResult> UploadFile(IFormFile file)
-    {
-        if (file == null || file.Length == 0)
-        {
-            return BadRequest("No file uploaded.");
+            _context = context;
+            _logger = logger;
         }
 
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "uploads", file.FileName);
-
-        var directoryPath = Path.GetDirectoryName(filePath);
-
-
-        if (directoryPath != null)
+      
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks([FromQuery] int offset = 0, [FromQuery] int limit = 5)
         {
-            Directory.CreateDirectory(directoryPath);
-        }
-        else
-        {
-            return BadRequest("Invalid file path.");
+            return await _context.Books
+                .Skip(offset)
+                .Take(limit)
+                .ToListAsync();
         }
 
-        using (var stream = new FileStream(filePath, FileMode.Create))
+      
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetBook(int id)
         {
-            await file.CopyToAsync(stream);
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            return book;
         }
 
-        var jsonContent = await System.IO.File.ReadAllTextAsync(filePath);
-        var books = JsonSerializer.Deserialize<List<Book>>(jsonContent);
-
-        if (books != null)
+      
+        [HttpPost]
+        public async Task<ActionResult<Book>> PostBook(Book book)
         {
-            _context.Books.AddRange(books);
+            _context.Books.Add(book);
             await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(GetBook), new { id = book.Id }, book);
         }
 
-        return Ok(new { FilePath = filePath, FileName = file.FileName });
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutBook(int id, Book book)
+        {
+            if (id != book.Id)
+            {
+                return BadRequest("ID in URL does not match ID in body");
+            }
+
+            _context.Entry(book).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!BookExists(id))
+                {
+                    return NotFound();
+                }
+                throw;
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
+        {
+            var book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+       
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadFile(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded");
+            }
+
+            using var streamReader = new StreamReader(file.OpenReadStream());
+            var content = await streamReader.ReadToEndAsync();
+
+            try
+            {
+                var books = System.Text.Json.JsonSerializer.Deserialize<List<Book>>(content);
+                await _context.Books.AddRangeAsync(books);
+                await _context.SaveChangesAsync();
+                return Ok($"Successfully imported {books.Count} books");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error processing file: {ex.Message}");
+            }
+        }
+
+        private bool BookExists(int id)
+        {
+            return _context.Books.Any(e => e.Id == id);
+        }
     }
-
-
-
 }

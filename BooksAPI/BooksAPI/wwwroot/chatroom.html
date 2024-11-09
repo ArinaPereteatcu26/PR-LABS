@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Room Test Client</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <style>
+        .chat-container {
+            width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .message-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #eee;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 15px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+
+            button:disabled {
+                background-color: #ccc;
+                cursor: not-allowed;
+            }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+            .status.connected {
+                background-color: #d4edda;
+                color: #155724;
+            }
+
+            .status.disconnected {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+
+            .status.connecting {
+                background-color: #fff3cd;
+                color: #856404;
+            }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h2>Chat Room Test Client</h2>
+        <div id="connectionStatus" class="status disconnected">Status: Disconnected</div>
+
+        <div class="input-container">
+            <input type="text" id="roomInput" placeholder="Enter room name">
+            <button onclick="joinRoom()" id="joinButton">Join Room</button>
+            <button onclick="leaveRoom()" id="leaveButton">Leave Room</button>
+        </div>
+
+        <div class="input-container">
+            <input type="text" id="userInput" placeholder="Enter your username">
+        </div>
+
+        <div class="message-container" id="messageList"></div>
+
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="Type a message">
+            <button onclick="sendMessage()" id="sendButton">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let connection = null;
+        let currentRoom = '';
+        let isConnected = false;
+
+        function updateStatus(status, className) {
+            const statusEl = document.getElementById('connectionStatus');
+            statusEl.textContent = `Status: ${status}`;
+            statusEl.className = `status ${className}`;
+        }
+
+        function updateButtons(connected) {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => button.disabled = !connected);
+        }
+
+        async function startConnection() {
+            if (connection) {
+                try {
+                    await connection.stop();
+                } catch (err) {
+                    console.error('Error stopping connection:', err);
+                }
+            }
+
+            updateStatus('Connecting...', 'connecting');
+            updateButtons(false);
+
+            connection = new signalR.HubConnectionBuilder()
+                .withUrl("http://localhost:5147/chatHub")
+                .withAutomaticReconnect()
+                .build();
+
+            connection.onclose(() => {
+                isConnected = false;
+                updateStatus('Disconnected', 'disconnected');
+                updateButtons(false);
+            });
+
+            connection.onreconnecting(() => {
+                isConnected = false;
+                updateStatus('Reconnecting...', 'connecting');
+                updateButtons(false);
+            });
+
+            connection.onreconnected(() => {
+                isConnected = true;
+                updateStatus('Connected', 'connected');
+                updateButtons(true);
+                if (currentRoom) {
+                    joinRoom(currentRoom, true);
+                }
+            });
+
+            connection.on("ReceiveMessage", (user, message) => {
+                addMessage(user, message);
+            });
+
+            try {
+                await connection.start();
+                isConnected = true;
+                updateStatus('Connected', 'connected');
+                updateButtons(true);
+            } catch (err) {
+                console.error('Error starting connection:', err);
+                updateStatus(`Connection failed: ${err.message}`, 'disconnected');
+            }
+        }
+
+        async function joinRoom() {
+            if (!isConnected) {
+                alert('Not connected to server. Please wait for connection.');
+                return;
+            }
+
+            const roomName = document.getElementById("roomInput").value;
+            if (!roomName) {
+                alert("Please enter a room name");
+                return;
+            }
+
+            try {
+                if (currentRoom) {
+                    await leaveRoom();
+                }
+                await connection.invoke("JoinRoom", roomName);
+                currentRoom = roomName;
+                addSystemMessage(`Joined room: ${roomName}`);
+            } catch (err) {
+                console.error('Error joining room:', err);
+                addSystemMessage(`Failed to join room: ${err.message}`);
+            }
+        }
+
+        async function leaveRoom() {
+            if (currentRoom) {
+                try {
+                    await connection.invoke("LeaveRoom", currentRoom);
+                    addSystemMessage(`Left room: ${currentRoom}`);
+                    currentRoom = '';
+                } catch (err) {
+                    console.error('Error leaving room:', err);
+                    addSystemMessage(`Failed to leave room: ${err.message}`);
+                }
+            }
+        }
+
+        async function sendMessage() {
+            if (!isConnected) {
+                alert('Not connected to server. Please wait for connection.');
+                return;
+            }
+
+            if (!currentRoom) {
+                alert("Please join a room first");
+                return;
+            }
+
+            const messageInput = document.getElementById("messageInput");
+            const message = messageInput.value;
+            const user = document.getElementById("userInput").value || "Anonymous";
+
+            if (!message) {
+                alert("Please enter a message");
+                return;
+            }
+
+            try {
+                await connection.invoke("SendMessage", currentRoom, user, message);
+                messageInput.value = '';
+            } catch (err) {
+                console.error('Error sending message:', err);
+                addSystemMessage(`Failed to send message: ${err.message}`);
+            }
+        }
+
+        function addMessage(user, message) {
+            const messageList = document.getElementById('messageList');
+            const messageItem = document.createElement('div');
+            messageItem.textContent = `${user}: ${message}`;
+            messageList.appendChild(messageItem);
+        }
+
+        function addSystemMessage(message) { 
+            const messageList = document.getElementById('messageList');
+            const messageItem = document.createElement('div');
+            messageItem.textContent = `System: ${message}`;
+            messageItem.style.fontStyle = 'italic';
+            messageList.appendChild(messageItem);
+        }
+
+        window.onload = function () {
+            startConnection();
+        };
+    </script>
+</body>
+</html>
