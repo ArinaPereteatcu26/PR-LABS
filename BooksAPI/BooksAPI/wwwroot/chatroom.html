@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en_US">
 <head>
     <title>Chat Room Test Client</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
@@ -77,19 +77,19 @@
         <div id="connectionStatus" class="status disconnected">Status: Disconnected</div>
 
         <div class="input-container">
-            <input type="text" id="roomInput" placeholder="Enter room name">
+            <label for="roomInput"></label><input type="text" id="roomInput" placeholder="Enter room name">
             <button onclick="joinRoom()" id="joinButton">Join Room</button>
             <button onclick="leaveRoom()" id="leaveButton">Leave Room</button>
         </div>
 
         <div class="input-container">
-            <input type="text" id="userInput" placeholder="Enter your username">
+            <label for="userInput"></label><input type="text" id="userInput" placeholder="Enter your username">
         </div>
 
         <div class="message-container" id="messageList"></div>
 
         <div class="input-container">
-            <input type="text" id="messageInput" placeholder="Type a message">
+            <label for="messageInput"></label><input type="text" id="messageInput" placeholder="Type a message">
             <button onclick="sendMessage()" id="sendButton">Send</button>
         </div>
     </div>
@@ -123,7 +123,7 @@
             updateButtons(false);
 
             connection = new signalR.HubConnectionBuilder()
-                .withUrl("http://localhost:5147/chatHub")
+                .withUrl("http://localhost:8080/chathub")
                 .withAutomaticReconnect()
                 .build();
 
@@ -237,7 +237,7 @@
             messageList.appendChild(messageItem);
         }
 
-        function addSystemMessage(message) { 
+        function addSystemMessage(message) {
             const messageList = document.getElementById('messageList');
             const messageItem = document.createElement('div');
             messageItem.textContent = `System: ${message}`;

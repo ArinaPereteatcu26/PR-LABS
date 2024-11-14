@@ -2,14 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Reflection.Emit;
-using BooksAPI.Models;
+using BooksAPI.Entities;
 
 
     namespace BooksAPI.Data
     {
-        public class ApplicationDbContext : DbContext
+        public class BookDbContext : DbContext
         {
-            public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            public BookDbContext(DbContextOptions<BookDbContext> options)
                 : base(options)
             {
             }
