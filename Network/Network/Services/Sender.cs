@@ -20,7 +20,6 @@
 //        await channel.BasicPublishAsync(exchange: _exchangeName, routingKey: string.Empty, body: body);
 //        Console.WriteLine($" [x] Sent {message}");
 //    }
-
 //    static async Task Main(string[] args)
 //    {
 //        var sender = new RabbitMQSender();
