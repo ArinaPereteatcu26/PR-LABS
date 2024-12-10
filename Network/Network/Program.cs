@@ -45,6 +45,8 @@ public class FtpUploader
     }
 }
 
+
+
 public class RabbitMQSender
 {
     private readonly string _hostName = "localhost";
@@ -164,16 +166,18 @@ public class Program
         //    File.WriteAllText("productsFilteredTotalPrice.json", jsonFilteredTotalPrice);
         //    File.WriteAllText("productsFilteredTotalPrice.xml", xmlFilteredTotalPrice);
 
-            // Instantiate RabbitMQSender and send messages
-            var rabbitMqSender = new RabbitMQSender();
+        // Instantiate RabbitMQSender and send messages
+        var rabbitMqSender = new RabbitMQSender();
 
-            // Publish to RabbitMQ
-            Console.WriteLine("Publishing initial product data to RabbitMQ...");
-            await rabbitMqSender.Send("mihai was here2");
+        // Publish to RabbitMQ
+        Console.WriteLine("Publishing initial product data to RabbitMQ...");
+        await rabbitMqSender.Send("mihai was here2");
 
-            var ftpPublisher = new FtpUploader();
-            ftpPublisher.UploadFile("ftp://localhost:21", "testuser", "testpass", $"E:\\miau.json");
-
+        var ftpPublisher = new FtpUploader();
+        ftpPublisher.UploadFile("ftp://localhost:21", "testuser", "testpass", $"E:\\miau.json");
+    }
+}
+    
 
         //Console.WriteLine("Publishing products in Euro to RabbitMQ...");
         //await rabbitMqSender.Send(jsonEuro);
@@ -182,7 +186,7 @@ public class Program
         //await rabbitMqSender.Send(jsonFilteredTotalPrice);
 
         //Console.WriteLine("Messages published successfully!");
-    }
+    
 
     // Additional logic to handle custom serialization
     //var customSerializationService = new CustomSerialization();
@@ -214,4 +218,3 @@ public class Program
     //{
     //    Console.WriteLine("Product list is null, skipping custom serialization.");
     //}
-}
