@@ -2,105 +2,181 @@
 using Network.Mappers;
 using Network.Models;
 using Network.Services;
+using RabbitMQ.Client;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Threading.Tasks;
 
-var requestSite = new Request();
-var htmlContent = await requestSite.GetSiteContent("https://librarius.md/ro/books/category/literatura-artistica/gender/840");
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
-var storeInfoService = new StoreInfo();
-List<Product>? products = storeInfoService.StoreProduct(htmlContent);
 
-if (products != null && products.Count > 0)
+public class RabbitMQSender
 {
-    foreach (var product in products)
+    private readonly string _hostName = "localhost";
+    private readonly string _exchangeName = "logs";
+
+    //public async Task Send(string message)
+    //{
+    //    var factory = new ConnectionFactory { HostName = _hostName };
+    //    using var connection = await factory.CreateConnectionAsync();
+    //    using var channel = await connection.CreateChannelAsync();
+
+    //    await channel.ExchangeDeclareAsync(exchange: _exchangeName, type: ExchangeType.Fanout);
+
+    //    var body = Encoding.UTF8.GetBytes(message);
+    //    await channel.BasicPublishAsync(exchange: _exchangeName, routingKey: string.Empty, body: body);
+    //    Console.WriteLine($" [x] Sent {message}");
+    //}
+
+    //public async Task Send(string message)
+    //{
+    //    var factory = new ConnectionFactory() { HostName = "localhost" };
+    //    using (var connection = factory.CreateConnection())
+    //    {
+    //        using (var channel = connection.CreateModel())
+    //        {
+    //            channel.QueueDeclare(queue: "game_results", durable: false, exclusive: false, autoDelete: false, arguments: null);
+    //            var body = Encoding.UTF8.GetBytes(message);
+
+    //            channel.BasicPublish(exchange: "", routingKey: "game_results", basicProperties: null, body: body);
+    //        }
+    //    }
+    //}
+    public async Task Send(string message)
     {
-        var htmlContentProducts = await requestSite.GetSiteContent(product.Link);
-        var htmlDocProduct = new HtmlDocument();
-        htmlDocProduct.LoadHtml(htmlContentProducts);
-        storeInfoService.StoreAdditionalInfo(htmlContentProducts, product);
+        var factory = new ConnectionFactory { HostName = "localhost" };
+        using var connection = await factory.CreateConnectionAsync();
+        using var channel = await connection.CreateChannelAsync();
+
+        await channel.ExchangeDeclareAsync(exchange: "logs", type: ExchangeType.Fanout);
+
+        message = "mihai was here";
+
+        var body = Encoding.UTF8.GetBytes(message);
+        await channel.BasicPublishAsync(exchange: "logs", routingKey: string.Empty, body: body);
+        Console.WriteLine($" [x] Sent {message}");
     }
 }
-else
+
+public class Program
 {
-    Console.WriteLine("No products found or product list is null.");
-    return; // Exit if there are no products to process
-}
-
-var serializationService = new SerializationLogic();
-
-var json = serializationService.SerializeListToJson(products);
-var xml = serializationService.SerializeListToXML(products);
-
-// Show JSON and XML in the console
-Console.WriteLine("Initial Products JSON:");
-Console.WriteLine(json);
-Console.WriteLine("Initial Products XML:");
-Console.WriteLine(xml);
-
-File.WriteAllText("productsInicial.json", json);
-File.WriteAllText("productsInicial.xml", xml);
-
-// Instantiate Mappers correctly
-var priceMapper = new Mappers();
-
-// Check for null before conversion
-if (products != null)
-{
-    var productsInEuro = priceMapper.CurrencyConversion(products); // Safe to call now
-    var jsonEuro = serializationService.SerializeListToJson(productsInEuro);
-    var xmlEuro = serializationService.SerializeListToXML(productsInEuro);
-
-    // Show converted JSON and XML in the console
-    Console.WriteLine("Products in Euro JSON:");
-    Console.WriteLine(jsonEuro);
-    Console.WriteLine("Products in Euro XML:");
-    Console.WriteLine(xmlEuro);
-
-    File.WriteAllText("productsInEuro.json", jsonEuro);
-    File.WriteAllText("productsInEuro.xml", xmlEuro);
-
-    var filteredProducts = priceMapper.FilterProductsByPrice(productsInEuro, 100, 250);
-    var filteredProductsTotalPrice = storeInfoService.StoreProductsWithTotalPrice(filteredProducts, priceMapper.SumPrices(filteredProducts));
-
-    var jsonFilteredTotalPrice = serializationService.SerializeListToJson(filteredProductsTotalPrice);
-    var xmlFilteredTotalPrice = serializationService.SerializeListToXML(filteredProductsTotalPrice);
-
-    // Show filtered JSON and XML in the console
-    Console.WriteLine("Filtered Products with Total Price JSON:");
-    Console.WriteLine(jsonFilteredTotalPrice);
-    Console.WriteLine("Filtered Products with Total Price XML:");
-    Console.WriteLine(xmlFilteredTotalPrice);
-
-    File.WriteAllText("productsFilteredTotalPrice.json", jsonFilteredTotalPrice);
-    File.WriteAllText("productsFilteredTotalPrice.xml", xmlFilteredTotalPrice);
-}
-
-var customSerializationService = new CustomSerialization();
-
-// Check if products is not null before serialization
-if (products != null)
-{
-    var customSerialized = customSerializationService.SerializeList(products);
-
-    // Show custom serialized data in the console
-    Console.WriteLine("Custom Serialized Data:");
-    Console.WriteLine(customSerialized);
-
-    File.WriteAllText("productsCustomSerialized.txt", customSerialized);
-
-    List<Product> customDeserialized = customSerializationService.DeserializeList<Product>(customSerialized);
-
-    // Show deserialized products in the console
-    Console.WriteLine($"Deserialized {customDeserialized.Count} products:");
-    foreach (var product in customDeserialized)
+    public static async Task Main(string[] args)
     {
-        Console.WriteLine("Product");
-        Console.WriteLine($"Name: {product.Name}");
-        Console.WriteLine($"Price: {product.Price}");
-        Console.WriteLine($"Link: {product.Link}");
-        Console.WriteLine($"Year: {product.Year}\n");
+        var requestSite = new Request();
+        var htmlContent = await requestSite.GetSiteContent("https://librarius.md/ro/books/category/literatura-artistica/gender/840");
+
+        var storeInfoService = new StoreInfo();
+        List<Product>? products = storeInfoService.StoreProduct(htmlContent);
+
+        if (products != null && products.Count > 0)
+        {
+            foreach (var product in products)
+            {
+                var htmlContentProducts = await requestSite.GetSiteContent(product.Link);
+                var htmlDocProduct = new HtmlDocument();
+                htmlDocProduct.LoadHtml(htmlContentProducts);
+                storeInfoService.StoreAdditionalInfo(htmlContentProducts, product);
+            }
+        }
+        else
+        {
+            Console.WriteLine("No products found or product list is null.");
+            return; // Exit if there are no products to process
+        }
+
+        var serializationService = new SerializationLogic();
+
+        var json = serializationService.SerializeListToJson(products);
+        var xml = serializationService.SerializeListToXML(products);
+
+        // Show JSON and XML in the console
+        Console.WriteLine("Initial Products JSON:");
+        Console.WriteLine(json);
+        Console.WriteLine("Initial Products XML:");
+        Console.WriteLine(xml);
+
+        File.WriteAllText("productsInicial.json", json);
+        File.WriteAllText("productsInicial.xml", xml);
+
+        // Instantiate Mappers correctly
+        var priceMapper = new Mappers();
+
+        if (products != null)
+        {
+            var productsInEuro = priceMapper.CurrencyConversion(products);
+            var jsonEuro = serializationService.SerializeListToJson(productsInEuro);
+            var xmlEuro = serializationService.SerializeListToXML(productsInEuro);
+
+            Console.WriteLine("Products in Euro JSON:");
+            Console.WriteLine(jsonEuro);
+            Console.WriteLine("Products in Euro XML:");
+            Console.WriteLine(xmlEuro);
+
+            File.WriteAllText("productsInEuro.json", jsonEuro);
+            File.WriteAllText("productsInEuro.xml", xmlEuro);
+
+            var filteredProducts = priceMapper.FilterProductsByPrice(productsInEuro, 100, 250);
+            var filteredProductsTotalPrice = storeInfoService.StoreProductsWithTotalPrice(filteredProducts, priceMapper.SumPrices(filteredProducts));
+
+            var jsonFilteredTotalPrice = serializationService.SerializeListToJson(filteredProductsTotalPrice);
+            var xmlFilteredTotalPrice = serializationService.SerializeListToXML(filteredProductsTotalPrice);
+
+            Console.WriteLine("Filtered Products with Total Price JSON:");
+            Console.WriteLine(jsonFilteredTotalPrice);
+            Console.WriteLine("Filtered Products with Total Price XML:");
+            Console.WriteLine(xmlFilteredTotalPrice);
+
+            File.WriteAllText("productsFilteredTotalPrice.json", jsonFilteredTotalPrice);
+            File.WriteAllText("productsFilteredTotalPrice.xml", xmlFilteredTotalPrice);
+
+            // Instantiate RabbitMQSender and send messages
+            var rabbitMqSender = new RabbitMQSender();
+
+            // Publish to RabbitMQ
+            Console.WriteLine("Publishing initial product data to RabbitMQ...");
+            await rabbitMqSender.Send(json);
+
+            Console.WriteLine("Publishing products in Euro to RabbitMQ...");
+            await rabbitMqSender.Send(jsonEuro);
+
+            Console.WriteLine("Publishing filtered products with total price to RabbitMQ...");
+            await rabbitMqSender.Send(jsonFilteredTotalPrice);
+
+            Console.WriteLine("Messages published successfully!");
+        }
+
+        // Additional logic to handle custom serialization
+        var customSerializationService = new CustomSerialization();
+
+        if (products != null)
+        {
+            var customSerialized = customSerializationService.SerializeList(products);
+
+            // Show custom serialized data in the console
+            Console.WriteLine("Custom Serialized Data:");
+            Console.WriteLine(customSerialized);
+
+            File.WriteAllText("productsCustomSerialized.txt", customSerialized);
+
+            List<Product> customDeserialized = customSerializationService.DeserializeList<Product>(customSerialized);
+
+            // Show deserialized products in the console
+            Console.WriteLine($"Deserialized {customDeserialized.Count} products:");
+            foreach (var product in customDeserialized)
+            {
+                Console.WriteLine("Product");
+                Console.WriteLine($"Name: {product.Name}");
+                Console.WriteLine($"Price: {product.Price}");
+                Console.WriteLine($"Link: {product.Link}");
+                Console.WriteLine($"Year: {product.Year}\n");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Product list is null, skipping custom serialization.");
+        }
     }
-}
-else
-{
-    Console.WriteLine("Product list is null, skipping custom serialization.");
 }

@@ -3,15 +3,17 @@ using System.Net.Sockets;
 
 namespace BooksAPI.TCP;
 
+//object for logging purposes,helps with log errors
 public class TcpServerIo(ILogger<TcpServerIo> logger) : IHostedService
 {
     private const string Filepath = "/tmp/sharedtext.txt";
     private const int Port = 6000;
+    //control access and prevent race conditions
     private readonly SemaphoreSlim _fileLock = new(1);
     private readonly Queue<(string Content, TaskCompletionSource<bool> Completion)> _writeQueue = new();
     private readonly object _queueLock = new();
     private int _pendingWrites;
-    private TcpListener _listener = new(IPAddress.Any, Port);
+    private TcpListener _listener = new(IPAddress.Any, Port);//incoming TCP connections
     private bool _isRunning;
     private readonly Random _random = new();
     private Task? _writeProcessorTask;
