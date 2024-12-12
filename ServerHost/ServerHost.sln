@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerHost", "ServerHost\ServerHost.csproj", "{245E714B-1847-4575-B7B2-23457F590587}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerHost", "ServerHost\ServerHost.csproj", "{245E714B-1847-4575-B7B2-23457F590587}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpServer", "HttpServer\HttpServer.csproj", "{6AE91118-F4E9-4F30-8615-A60E78A1359F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{245E714B-1847-4575-B7B2-23457F590587}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{245E714B-1847-4575-B7B2-23457F590587}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{245E714B-1847-4575-B7B2-23457F590587}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AE91118-F4E9-4F30-8615-A60E78A1359F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AE91118-F4E9-4F30-8615-A60E78A1359F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AE91118-F4E9-4F30-8615-A60E78A1359F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AE91118-F4E9-4F30-8615-A60E78A1359F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,21 +1,38 @@
-﻿using HtmlAgilityPack;
-using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-
-using System;
-using System.IO;
 using System.Net;
+
+public class BookProcessor
+{
+    private static readonly HttpClient httpClient = new HttpClient();
+
+    public async Task SendBookToApi(string content)
+    {
+        try
+        {
+            // Set up the content as StringContent with proper encoding and headers
+            var jsonContent = new StringContent(content, Encoding.UTF8, "application/json");
+
+            // Send the request
+            var response = await httpClient.PostAsync("http://localhost:8080/api/books", jsonContent);
+
+            // Ensure the response was successful
+            response.EnsureSuccessStatusCode();
+            Console.WriteLine($"Successfully sent book data to API. Status: {response}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error sending book data to API: {ex.Message}");
+        }
+    }
+}
 
 
 public class FtpDownloader
 {
+    private static readonly HttpClient httpClient = new HttpClient();
+
     public async Task<string> DownloadFile(string ftpUrl, string username, string password, string filePath)
     {
         try
@@ -38,7 +55,11 @@ public class FtpDownloader
             string fileContent = File.ReadAllText(localFilePath);
             Console.WriteLine($"File content: {fileContent}");
 
-            // Step 3: Delete the file from the FTP server
+            // Step 3: Send file content to API-------------------------
+            var bookProcessor = new BookProcessor();
+            await bookProcessor.SendBookToApi(fileContent);
+
+            // Step 4: Delete the file from the FTP server
             DeleteFileFromFtp(ftpUrl, username, password);
             Console.WriteLine($"File deleted from FTP: {ftpUrl}");
 
@@ -51,7 +72,7 @@ public class FtpDownloader
         }
     }
 
-    private void DeleteFileFromFtp(string ftpUrl, string username, string password)
+    public void DeleteFileFromFtp(string ftpUrl, string username, string password)
     {
         try
         {
@@ -70,10 +91,44 @@ public class FtpDownloader
         }
     }
 
+    public List<string> ListFilesInDirectory(string ftpDirectoryUrl, string username, string password)
+    {
+        List<string> fileUrls = new List<string>();
+
+        try
+        {
+            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftpDirectoryUrl);
+            request.Method = WebRequestMethods.Ftp.ListDirectory;
+            request.Credentials = new NetworkCredential(username, password);
+
+            using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
+            using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    if (line != "." && line != "..") // Skip current and parent directory
+                    {
+                        fileUrls.Add($"{ftpDirectoryUrl}/{line}");
+                    }
+                }
+            }
+
+            Console.WriteLine($"Listed files in directory {ftpDirectoryUrl}: {fileUrls.Count} files found.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An error occurred while listing files: {ex.Message}");
+        }
+
+        return fileUrls;
+    }
 }
 
 class RabbitMqConsumer
 {
+    private readonly BookProcessor _bookProcessor = new BookProcessor();
+
     public async Task Consume()
     {
         var factory = new ConnectionFactory { HostName = "localhost" };
@@ -90,12 +145,14 @@ class RabbitMqConsumer
         Console.WriteLine(" [*] Waiting for logs.");
 
         var consumer = new AsyncEventingBasicConsumer(channel);
-        consumer.ReceivedAsync += (model, ea) =>
+        consumer.ReceivedAsync += async (model, ea) =>
         {
             byte[] body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
             Console.WriteLine($" [x] {message}");
-            return Task.CompletedTask;
+            
+            // Send message to API
+            await _bookProcessor.SendBookToApi(message);
         };
 
         await channel.BasicConsumeAsync(queueName, autoAck: true, consumer: consumer);
@@ -106,19 +163,51 @@ class RabbitMqConsumer
 
     public static async Task Main(string[] args)
     {
-        //    var consumer = new RabbitMqConsumer();
-        //    await consumer.Consume();
-
-
-
-        // Download a file using FtpDownloader
-        var ftpDownloader = new FtpDownloader();
-        string downloadedFilePath = await ftpDownloader.DownloadFile("ftp://localhost:21/miau.json", "testuser", "testpass", "miau.json");
-
-        // Check if file was successfully downloaded
-        if (!string.IsNullOrEmpty(downloadedFilePath))
+        // Start RabbitMqConsumer in a separate thread
+        var consumerTask = Task.Run(async () =>
         {
-            Console.WriteLine($"File downloaded and saved to: {downloadedFilePath}");
-        }
+            var consumer = new RabbitMqConsumer();
+            await consumer.Consume();
+        });
+
+        // Start FTP download task every 30 seconds in a separate thread
+        var ftpTask = Task.Run(async () =>
+        {
+            var ftpDownloader = new FtpDownloader();
+            var username = "testuser";
+            var password = "testpass";
+
+            while (true)
+            {
+                try
+                {
+                    var fileUrls = ftpDownloader.ListFilesInDirectory("ftp://localhost:21", username, password);
+
+                    // Step 2: Iterate through the list, download each file, and delete it
+                    foreach (var fileUrl in fileUrls)
+                    {
+                        // Download the file content
+                        string downloadedFilePath = await ftpDownloader.DownloadFile(fileUrl, username, password, Path.GetFileName(fileUrl));
+
+                        if (!string.IsNullOrEmpty(downloadedFilePath))
+                        {
+                            // Step 3: Delete the file from the FTP server
+                            ftpDownloader.DeleteFileFromFtp(fileUrl, username, password);
+                            Console.WriteLine($"File {fileUrl} deleted from FTP server.");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error downloading file: {ex.Message}");
+                }
+
+                // Wait for 30 seconds before downloading again
+                await Task.Delay(30000); // 30 seconds
+            }
+        });
+
+        // Wait for both tasks to complete
+        await Task.WhenAny(consumerTask, ftpTask);
     }
 }
